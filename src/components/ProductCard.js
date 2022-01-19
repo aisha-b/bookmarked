@@ -2,52 +2,177 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, Container, Row } from "react-bootstrap";
 import { faHeart, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from "../UserContext";
+import Swal from "sweetalert2";
 
 export default function ProductCard(props) {
-	const {getCartQuantity} = useContext(UserContext);
+	const { user, getCartQuantity } = useContext(UserContext);
 	const { _id, name, imageURL, price, specifications } = props.productProp;
-	const getAllActiveProducts = props.getAllActiveProducts;
+	const setWishlist = props.setWishlist;
+	const setActiveProducts = props.setActiveProducts;
 	const author = specifications[0]["value"];
+	const [isInWishlist, setIsInWishlist] = useState(false);
+	const [wishBtnVariant, setWishBtnVariant] = useState("outline-danger");
+	const [isInCart, setIsInCart] = useState(false);
+	const [cartBtnVariant, setCartBtnVariant] = useState("outline-info");
 
-
-	const addToWishlist = (id) => {
-		fetch(`${process.env.REACT_APP_API_URL}/api/wishlist/${id}/add`, {
-			method: "PUT",
+	const getWishlist = () => {
+		fetch(`${process.env.REACT_APP_API_URL}/api/wishlist/`, {
+			method: "GET",
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 		})
 			.then((res) => res.json())
 			.then((res) => {
-				console.log(res);
+				if (res.wishlist) {
+					setWishlist(res.wishlist);
+				}
 			});
+	};
+
+	const getAllActiveProducts = () => {
+		fetch(`${process.env.REACT_APP_API_URL}/api/products/active`)
+			.then((res) => res.json())
+			.then((res) => {
+				setActiveProducts(res.activeProducts);
+			});
+	};
+
+	const checkIfInWishlist = (id) => {
+		fetch(`${process.env.REACT_APP_API_URL}/api/wishlist/${id}/check`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		})
+			.then((res) => res.json())
+			.then((res) => {
+				if (res) {
+					setIsInWishlist(true);
+				} else {
+					setIsInWishlist(false);
+				}
+			});
+	};
+
+	const checkIfInCart = (id) => {
+		fetch(`${process.env.REACT_APP_API_URL}/api/cart/${id}/check`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
+			},
+		})
+			.then((res) => res.json())
+			.then((res) => {
+				if (res) {
+					setIsInCart(true);
+				} else {
+					setIsInCart(false);
+				}
+			});
+	};
+
+	const addToWishlist = (id) => {
+		if (user.id === null) {
+			Swal.fire({
+				title: "You need to login first.",
+				icon: "error",
+			});
+		} else if (isInWishlist) {
+			fetch(
+				`${process.env.REACT_APP_API_URL}/api/wishlist/${id}/remove`,
+				{
+					method: "DELETE",
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem(
+							"token"
+						)}`,
+					},
+				}
+			)
+				.then((res) => res.json())
+				.then((res) => {
+					if (res) {
+						getAllActiveProducts();
+						getWishlist();
+					}
+				});
+		} else {
+			fetch(`${process.env.REACT_APP_API_URL}/api/wishlist/${id}/add`, {
+				method: "PUT",
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			})
+				.then((res) => res.json())
+				.then((res) => {
+					if (res) {
+						getAllActiveProducts();
+						getWishlist();
+					}
+				});
+		}
 	};
 
 	const addToCart = (id) => {
-		fetch(`${process.env.REACT_APP_API_URL}/api/cart/${id}/add`, {
-			method: "PUT",
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem("token")}`,
-			},
-		})
-			.then((res) => res.json())
-			.then((res) => {
-				if(res){
-					getCartQuantity();
-				}
-				
+		if (user.id === null) {
+			Swal.fire({
+				title: "You need to login first.",
+				icon: "error",
 			});
+		} else if (isInCart) {
+			fetch(`${process.env.REACT_APP_API_URL}/api/cart/${id}/remove`, {
+				method: "DELETE",
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			})
+				.then((res) => res.json())
+				.then((res) => {
+					if (res) {
+						getCartQuantity();
+						getAllActiveProducts();
+					}
+				});
+		} else {
+			fetch(`${process.env.REACT_APP_API_URL}/api/cart/${id}/add`, {
+				method: "PUT",
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			})
+				.then((res) => res.json())
+				.then((res) => {
+					if (res) {
+						getCartQuantity();
+						getAllActiveProducts();
+					}
+				});
+		}
 	};
+
+	useEffect(() => {
+		checkIfInWishlist(_id);
+		checkIfInCart(_id);
+		if (isInWishlist) {
+			setWishBtnVariant("danger");
+		} else {
+			setWishBtnVariant("outline-danger");
+		}
+		if (isInCart) {
+			setCartBtnVariant("info");
+		} else {
+			setCartBtnVariant("outline-info");
+		}
+	}, [isInCart, isInWishlist]);
 
 	return (
 		<Card className="product-card m-2">
 			<NavLink
 				to={{
-					pathname: "/product",
-					state: { productId: _id },
+					pathname: `/product/${_id}`,
 				}}
 			>
 				<Card.Img variant="top" className="card-img" src={imageURL} />
@@ -60,14 +185,14 @@ export default function ProductCard(props) {
 				<Row>
 					<Button
 						className="col m-1"
-						variant="primary"
+						variant={cartBtnVariant}
 						onClick={(e) => addToCart(_id)}
 					>
 						<FontAwesomeIcon icon={faShoppingCart} />
 					</Button>
 					<Button
 						className="col m-1"
-						variant="primary"
+						variant={wishBtnVariant}
 						onClick={(e) => addToWishlist(_id)}
 					>
 						<FontAwesomeIcon icon={faHeart} />

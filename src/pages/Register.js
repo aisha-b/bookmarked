@@ -167,7 +167,7 @@ export default function Register() {
 							</Button>
 						</Form>
 						<p>
-							Don't have an account yet?{" "}
+							Already have an account?{" "}
 							<NavLink to="/login">Login</NavLink>
 						</p>
 					</Col>

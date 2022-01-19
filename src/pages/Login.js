@@ -114,7 +114,7 @@ export default function Login() {
 						</Button>
 					</Form>
 					<p>
-						Already have an account?{" "}
+						Don't have an account yet?{" "}
 						<NavLink to="/register">Register</NavLink>
 					</p>
 				</Col>

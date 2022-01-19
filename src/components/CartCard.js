@@ -59,6 +59,7 @@ export default function CartCard(props) {
 			.then((res) => {
 				if (res) {
 					setItemQuantity(itemQuantity + 1);
+					getCart();
 				}
 			});
 	};
@@ -81,6 +82,7 @@ export default function CartCard(props) {
 			.then((res) => {
 				if (res) {
 					setItemQuantity(itemQuantity - 1);
+					getCart();
 				}
 			});
 	};
@@ -104,12 +106,11 @@ export default function CartCard(props) {
 	return (
 		<Card className="m-2 w-100 py-2">
 			<Container>
-				<Row className="align-items-center justify-content-between">
-					<Col xs={2}>
+				<Row className="align-items-center justify-content-lg-between justify-content-center text-center">
+					<Col lg={2}>
 						<NavLink
 							to={{
-								pathname: "/product",
-								state: { productId: _id },
+								pathname: `/product/${_id}`,
 							}}
 						>
 							<img
@@ -119,16 +120,16 @@ export default function CartCard(props) {
 							/>
 						</NavLink>
 					</Col>
-					<Col xs={4}>
+					<Col lg={4}>
 						<Row>
-							<h3>{name}</h3>
+							<h4>{name}</h4>
 						</Row>
 						<Row>
-							<h5>Php {price}</h5>
+							<h6>Php {price}</h6>
 						</Row>
 					</Col>
 
-					<Col xs={3} className="d-flex flex-row ">
+					<Col lg={3} className="d-flex flex-row justify-content-center">
 						{props.type === "cart" ? (
 							<Button
 								onClick={() => decreaseQuantity(_id)}
@@ -163,7 +164,7 @@ export default function CartCard(props) {
 						) : null}
 					</Col>
 
-					<Col xs={3} className="text-center">
+					<Col lg={3} className="text-center">
 						<h4>Php {price * quantity}</h4>
 					</Col>
 				</Row>

@@ -22,7 +22,8 @@ export default function Shop() {
 	const [description, setDescription] = useState("");
 	const [price, setPrice] = useState(0);
 	const [imageURL, setImageURL] = useState("");
-    const [author, setAuthor] = useState("");
+	const [author, setAuthor] = useState("");
+	const [genre, setGenre] = useState("");
 
 	const [showAdd, setShowAdd] = useState(false);
 
@@ -47,20 +48,23 @@ export default function Shop() {
 	};
 
 	const addProduct = (e) => {
-        e.preventDefault();
+		e.preventDefault();
 
 		fetch(`${process.env.REACT_APP_API_URL}/api/products/create`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `$Bearer ${localStorage.getItem("token")}`,
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 			body: JSON.stringify({
 				name: name,
 				imageURL: imageURL,
 				description: description,
 				price: price,
-                specifications: [{key: "Author", value:[author]}]
+				specifications: [
+					{ key: "Author", value: author.split(",") },
+					{ key: "Genre", value: genre.split(",") },
+				],
 			}),
 		})
 			.then((res) => res.json())
@@ -72,6 +76,14 @@ export default function Shop() {
 						title: "Product successfully added",
 						icon: "success",
 					});
+
+					getAllProducts();
+					setName("");
+					setPrice(0);
+					setDescription("");
+					setImageURL("");
+					setAuthor("");
+					setGenre("");
 				} else {
 					Swal.fire({
 						title: "Failed",
@@ -92,7 +104,11 @@ export default function Shop() {
 			<Container className="d-flex flex-wrap justify-content-center">
 				{activeProducts.map((product) => {
 					return (
-						<ProductCard productProp={product} key={product._id} />
+						<ProductCard
+							productProp={product}
+							setActiveProducts={setActiveProducts}
+							key={product._id}
+						/>
 					);
 				})}
 			</Container>
@@ -111,7 +127,8 @@ export default function Shop() {
 						<tr>
 							<th>Image</th>
 							<th>Name</th>
-                            <th>Author</th>
+							<th>Author</th>
+							<th>Genre</th>
 							<th>Description</th>
 							<th>Price</th>
 							<th>Availability</th>
@@ -130,80 +147,108 @@ export default function Shop() {
 						})}
 					</tbody>
 				</Table>
-
-				<Modal show={showAdd} onHide={closeAdd}>
-					<Modal.Header closeButton>
-						<Modal.Title>Add Course</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						<Form onSubmit={(e) => addProduct(e)}>
-							<Form.Group controlId="productName">
-								<Form.Label>Product Name</Form.Label>
-								<Form.Control
-									type="text"
-									value={name}
-									onChange={(e) => setName(e.target.value)}
-								/>
-							</Form.Group>
-                            <Form.Group controlId="productAuthor">
-								<Form.Label>Author</Form.Label>
-								<Form.Control
-									type="text"
-									value={author}
-									onChange={(e) => setAuthor(e.target.value)}
-								/>
-							</Form.Group>
-							<Form.Group controlId="courseDescription">
-								<Form.Label>Description:</Form.Label>
-								<Form.Control
-									type="text"
-									value={description}
-									onChange={(e) =>
-										setDescription(e.target.value)
-									}
-								/>
-							</Form.Group>
-							<Form.Group controlId="imageURL">
-								<Form.Label>Image URL:</Form.Label>
-								<Form.Control
-									type="text"
-									value={imageURL}
-									onChange={(e) =>
-										setImageURL(e.target.value)
-									}
-								/>
-							</Form.Group>
-							<Form.Group controlId="productPrice">
-								<Form.Label>Price:</Form.Label>
-								<Form.Control
-									type="number"
-									value={price}
-									onChange={(e) => setPrice(e.target.value)}
-								/>
-							</Form.Group>
-
-							<Button
-								className="my-2"
-								variant="primary"
-								type="submit"
-								style={{ width: "100%" }}
-							>
-								Add
-							</Button>
-						</Form>
-					</Modal.Body>
-				</Modal>
 			</Container>
 		);
 	}
 
-	function ShopView() {
-		if (user.isAdmin) {
-			return <AdminView />;
-		} else {
-			return <CustomerView />;
-		}
-	}
+	return (
+		<>
+			{user.isAdmin ? (
+				<>
+					<AdminView />
 
-	return <ShopView />;
+					<Modal show={showAdd} onHide={closeAdd}>
+						<Modal.Header closeButton>
+							<Modal.Title>Add Course</Modal.Title>
+						</Modal.Header>
+						<Modal.Body>
+							<Form onSubmit={(e) => addProduct(e)}>
+								<Form.Group controlId="productName">
+									<Form.Label>Product Name</Form.Label>
+									<Form.Control
+										type="text"
+										value={name}
+										onChange={(e) =>
+											setName(e.target.value)
+										}
+									/>
+								</Form.Group>
+								<Form.Group controlId="productAuthor">
+									<Form.Label>Author</Form.Label>
+									<Form.Text>
+										{" "}
+										(For multiple authors, please separate
+										with comma)
+									</Form.Text>
+									<Form.Control
+										type="text"
+										value={author}
+										onChange={(e) =>
+											setAuthor(e.target.value)
+										}
+									/>
+								</Form.Group>
+								<Form.Group controlId="productGenre">
+									<Form.Label>Genre</Form.Label>
+									<Form.Text>
+										{" "}
+										(For multiple genres, please separate
+										with comma)
+									</Form.Text>
+									<Form.Control
+										type="text"
+										value={genre}
+										onChange={(e) =>
+											setGenre(e.target.value)
+										}
+									/>
+								</Form.Group>
+								<Form.Group controlId="courseDescription">
+									<Form.Label>Description:</Form.Label>
+									<Form.Control
+										type="text"
+										value={description}
+										onChange={(e) =>
+											setDescription(e.target.value)
+										}
+									/>
+								</Form.Group>
+								<Form.Group controlId="imageURL">
+									<Form.Label>Image URL:</Form.Label>
+									<Form.Control
+										type="text"
+										value={imageURL}
+										onChange={(e) =>
+											setImageURL(e.target.value)
+										}
+									/>
+								</Form.Group>
+								<Form.Group controlId="productPrice">
+									<Form.Label>Price:</Form.Label>
+									<Form.Control
+										type="number"
+										value={price}
+										onChange={(e) =>
+											setPrice(e.target.value)
+										}
+									/>
+								</Form.Group>
+
+								<Button
+									className="my-2"
+									variant="primary"
+									type="submit"
+									style={{ width: "100%" }}
+								>
+									Add
+								</Button>
+							</Form>
+						</Modal.Body>
+					</Modal>
+				</>
+			) : (
+				<CustomerView />
+			)}
+		</>
+	);
 }

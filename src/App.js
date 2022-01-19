@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { Container } from "react-bootstrap";
 import { UserProvider } from "./UserContext";
 import "./App.css";
-import 'bootswatch/dist/minty/bootstrap.min.css';
+import 'bootswatch/dist/yeti/bootstrap.min.css';
 // import "bootstrap/dist/css/bootstrap.min.css";
 import AppNavBar from "./components/AppNavBar";
 import ErrorPage from "./pages/ErrorPage";
@@ -19,6 +19,7 @@ import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
 import Checkout from "./pages/Checkout";
 import Product from "./pages/Product";
+import Orders from "./pages/Orders";
 
 function App() {
 	const [user, setUser] = useState({
@@ -91,7 +92,8 @@ function App() {
 						<Route exact path="/cart" component={Cart} />
 						<Route exact path="/wishlist" component={Wishlist} />
 						<Route exact path="/checkout" component={Checkout} />
-						<Route exact path="/product" component={Product} />
+						<Route exact path="/shop-orders" component={Orders} />
+						<Route exact path="/product/:productId" component={Product} />
 						<Route exact path="*" component={ErrorPage} />
 					</Switch>
 				</Container>

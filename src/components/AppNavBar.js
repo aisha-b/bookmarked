@@ -50,9 +50,12 @@ export default function AppNavBar() {
 						as={NavLink}
 						to="/cart"
 					>
-						<FontAwesomeIcon icon={faShoppingCart}>
-						</FontAwesomeIcon>
-						<span className="badge badge-light" style={{color:"green"}}>{cartQuantity}</span>
+						<FontAwesomeIcon
+							icon={faShoppingCart}
+						></FontAwesomeIcon>
+						{user.id !== null ? (
+							<span class="cart-badge">{cartQuantity}</span>
+						) : null}
 					</Button>
 				</>
 			);
@@ -95,12 +98,12 @@ export default function AppNavBar() {
 						as={NavLink}
 						to="/cart"
 					>
-						<FontAwesomeIcon icon={faShoppingCart}>
-							
-						</FontAwesomeIcon>
-						<span className="badge badge-success">
-								{cartQuantity}
-							</span>
+						<FontAwesomeIcon
+							icon={faShoppingCart}
+						></FontAwesomeIcon>
+						{user.id !== null ? (
+							<span class="cart-badge">{cartQuantity}</span>
+						) : null}
 					</Button>
 				</>
 			);
@@ -109,7 +112,13 @@ export default function AppNavBar() {
 
 	return (
 		<>
-			<Navbar fixed="top" bg="primary" expand="lg" className="p-3">
+			<Navbar
+				fixed="top"
+				bg="primary"
+				variant="dark"
+				expand="lg"
+				className="p-3"
+			>
 				<div className="container-lg">
 					<Navbar.Brand href="/">Bookstore</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />

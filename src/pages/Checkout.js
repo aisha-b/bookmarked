@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Redirect, useLocation } from "react-router-dom";
@@ -7,7 +7,7 @@ import CartCard from "../components/CartCard";
 import UserContext from "../UserContext";
 
 export default function Checkout() {
-	const {getCartQuantity} = useContext(UserContext);
+	const { getCartQuantity } = useContext(UserContext);
 	const location = useLocation();
 	const history = useHistory();
 	const { cart, total } = location.state;
@@ -18,6 +18,7 @@ export default function Checkout() {
 	const [country, setCountry] = useState("");
 	const [shippingFee, setShippingFee] = useState(100);
 	const [totalOrder, setTotalOrder] = useState(total + 100);
+	const [isDisabled, setIsDisabled] = useState(true);
 
 	const Checkout = (e) => {
 		e.preventDefault();
@@ -77,6 +78,14 @@ export default function Checkout() {
 			</Card>
 		);
 	}
+
+	useEffect(() => {
+		if (street !== "" && city !== "" && zip !== "" && country !== "") {
+			setIsDisabled(false);
+		} else {
+			setIsDisabled(true);
+		}
+	}, [street, city, zip, country]);
 
 	return (
 		<Container className="my-5">
@@ -217,6 +226,7 @@ export default function Checkout() {
 				<Row className="justify-content-center my-4">
 					<Col lg={8}>
 						<Button
+							disabled={isDisabled}
 							className="w-100 mb-5"
 							variant="primary"
 							type="submit"

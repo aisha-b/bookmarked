@@ -31,9 +31,6 @@ export default function Wishlist() {
 
 	function WishlistContent() {
 		if (user.id === null) {
-			Swal.fire({
-				title: "You need to login first",
-			});
 			return <Redirect to="/login" />;
 		} else {
 			return (
@@ -41,11 +38,12 @@ export default function Wishlist() {
 					<Row className="justify-content-center">
 						<Col lg={10}>
 							<h1>Wishlist</h1>
-							<Card className="d-flex flex-row flex-wrap">
+							<Card className="d-flex flex-row flex-wrap justify-content-center justify-content-lg-start">
 								{wishlist.map((product) => {
 									return (
 										<ProductCard
 											productProp={product}
+											setWishlist={setWishlist}
 											key={product._id}
 										/>
 									);

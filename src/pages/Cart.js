@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { NavLink, Redirect } from "react-router-dom";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import Swal from "sweetalert2";
 import CartCard from "../components/CartCard";
 import UserContext from "../UserContext";
 
 export default function Cart() {
 	const { user } = useContext(UserContext);
+	const { productId } = useParams();
 
 	const [cart, setCart] = useState([]);
 	const [total, setTotal] = useState(0);
@@ -49,44 +51,63 @@ export default function Cart() {
 
 	function CartContent() {
 		if (user.id === null) {
-			Swal.fire({
-				title: "You need to login first",
-			});
 			return <Redirect to="/login" />;
 		} else {
 			return (
-				<Card className="d-flex flex-row flex-wrap p-3">
-					{cart.map((product) => {
-						return (
-							<CartCard
-								productProp={product.productId}
-								quantity={product.quantity}
-								setCart={setCart}
-								type={"cart"}
-								key={product.productId._id}
-							/>
-						);
-					})}
-					<Container>
-						<Row className="">
-							<h3>TOTAL</h3>
-
-							<h3>Php {total}</h3>
-						</Row>
-						<Row className="w-50 justify-content-center m-auto">
-							<Button
-								classsName="m-2 w-50"
-								as={NavLink}
-								to={{
-									pathname: "/checkout",
-									state: {
-										cart: cart,
-										total: total
-									},
-								}}
+				<Card className="d-flex flex-row flex-wrap p-3 text-center">
+					{cart.length > 0 ? (
+						<>
+							{cart.map((product) => {
+								return (
+									<CartCard
+										productProp={product.productId}
+										quantity={product.quantity}
+										setCart={setCart}
+										type={"cart"}
+										key={product.productId._id}
+									/>
+								);
+							})}
+						</>
+					) : (
+						<h4 className="w-100">
+							Your cart is empty.{" "}
+							<NavLink
+								style={{ textDecoration: "none" }}
+								to="/shop"
 							>
-								<h3 className="m-auto"> Proceed to Checkout</h3>
-							</Button>
+								Shop now.
+							</NavLink>
+						</h4>
+					)}
+					<Container>
+						{cart.length > 0 ? (
+							<Row className="my-3">
+								<h3>TOTAL: PHP {total}</h3>
+							</Row>
+						) : null}
+
+						<Row className="justify-content-center">
+							{cart.length > 0 ? (
+								<Col lg={10}>
+									<Button
+										className="m-2 p-2"
+										as={NavLink}
+										to={{
+											pathname: "/checkout",
+											state: {
+												cart: cart,
+												total: total,
+											},
+										}}
+									>
+										<h3 className="m-auto">
+											{" "}
+											Proceed to Checkout
+										</h3>
+									</Button>
+								</Col>
+							) : null}
 						</Row>
 					</Container>
 				</Card>

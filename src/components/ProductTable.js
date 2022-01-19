@@ -13,14 +13,15 @@ export default function ProductTable(props) {
 		specifications,
 	} = props.productProp;
 	const getAllProducts = props.getAllProducts;
-	const author = specifications[0]["value"];
+	const author = specifications[0]["value"].toString();
+	const genre = specifications[1]["value"].toString();
 
 	const [newName, setNewName] = useState(name);
 	const [newDescription, setNewDescription] = useState(description);
 	const [newPrice, setNewPrice] = useState(price);
 	const [newImageURL, setNewImageURL] = useState(imageURL);
-	const [newAuthor, setNewAuthor] = useState(author);
-
+	const [newAuthor, setNewAuthor] = useState(author.split(","));
+	const [newGenre, setNewGenre] = useState(genre.split(","));
 	const [showAdd, setShowAdd] = useState(false);
 
 	const openAdd = () => setShowAdd(true);
@@ -30,7 +31,7 @@ export default function ProductTable(props) {
 		fetch(`${process.env.REACT_APP_API_URL}/api/products/${id}/archive`, {
 			method: "PUT",
 			headers: {
-				"Authorization": `Bearer ${localStorage.getItem("token")}`,
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 		})
 			.then((res) => res.json())
@@ -45,12 +46,12 @@ export default function ProductTable(props) {
 		fetch(`${process.env.REACT_APP_API_URL}/api/products/${id}/unarchive`, {
 			method: "PUT",
 			headers: {
-				"Authorization": `Bearer ${localStorage.getItem("token")}`,
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 		})
 			.then((res) => res.json())
 			.then((res) => {
-				console.log(res);
+				getAllProducts();
 			});
 	};
 
@@ -58,35 +59,39 @@ export default function ProductTable(props) {
 		fetch(`${process.env.REACT_APP_API_URL}/api/products/${id}/delete`, {
 			method: "DELETE",
 			headers: {
-				"Authorization": `Bearer ${localStorage.getItem("token")}`,
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 		})
 			.then((res) => res.json())
 			.then((res) => {
-				console.log(res);
+				getAllProducts();
 			});
 	};
 
-    const updateProduct = (e, id) => {
-        e.preventDefault();
+	const updateProduct = (e, id) => {
+		e.preventDefault();
 
 		fetch(`${process.env.REACT_APP_API_URL}/api/products/${id}/update`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": `$Bearer ${localStorage.getItem("token")}`,
+				Authorization: `Bearer ${localStorage.getItem("token")}`,
 			},
 			body: JSON.stringify({
 				name: newName,
 				imageURL: newImageURL,
 				description: newDescription,
 				price: newPrice,
-                specifications: [{key: "Author", value: [newAuthor]}]
+				specifications: [
+					{ key: "Author", value: newAuthor },
+					{ key: "Genre", value: newGenre },
+				],
 			}),
 		})
 			.then((res) => res.json())
 			.then((res) => {
-                console.log(res)
+				console.log(res);
+				console.log(localStorage.getItem("token"));
 				if (res) {
 					closeAdd();
 
@@ -94,6 +99,8 @@ export default function ProductTable(props) {
 						title: "Product successfully updated",
 						icon: "success",
 					});
+
+					getAllProducts();
 				} else {
 					Swal.fire({
 						title: "Failed",
@@ -119,6 +126,7 @@ export default function ProductTable(props) {
 				</td>
 				<td>{name}</td>
 				<td>{author}</td>
+				<td>{genre}</td>
 				<td>{description}</td>
 				<td>Php {price}</td>
 				<td>{isActive ? "Available" : "Unavailable"}</td>
@@ -178,10 +186,20 @@ export default function ProductTable(props) {
 						</Form.Group>
 						<Form.Group controlId="productAuthor">
 							<Form.Label>Author</Form.Label>
+							<Form.Text> (For multiple authors, please separate with comma)</Form.Text>
 							<Form.Control
 								type="text"
 								value={newAuthor}
 								onChange={(e) => setNewAuthor(e.target.value)}
+							/>
+						</Form.Group>
+						<Form.Group controlId="productAuthor">
+							<Form.Label>Author</Form.Label>
+							<Form.Text> (For multiple genres, please separate with comma)</Form.Text>
+							<Form.Control
+								type="text"
+								value={newGenre}
+								onChange={(e) => setNewGenre(e.target.value)}
 							/>
 						</Form.Group>
 						<Form.Group controlId="courseDescription">
@@ -189,7 +207,9 @@ export default function ProductTable(props) {
 							<Form.Control
 								type="text"
 								value={newDescription}
-								onChange={(e) => setNewDescription(e.target.value)}
+								onChange={(e) =>
+									setNewDescription(e.target.value)
+								}
 							/>
 						</Form.Group>
 						<Form.Group controlId="imageURL">
