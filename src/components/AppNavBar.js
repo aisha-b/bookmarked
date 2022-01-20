@@ -2,6 +2,7 @@ import { Button, Container, ListGroup, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+	faBookmark,
 	faHeart,
 	faShoppingCart,
 	faUser,
@@ -120,10 +121,10 @@ export default function AppNavBar() {
 				className="p-3"
 			>
 				<div className="container-lg">
-					<Navbar.Brand href="/">Bookstore</Navbar.Brand>
+					<Navbar.Brand href="/"><FontAwesomeIcon icon={faBookmark} /> BOOKMARKED</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
-					<Navbar.Collapse id="basic-navbar-nav">
-						<Nav className="me-auto">
+					<Navbar.Collapse id="basic-navbar-navr">
+						<Nav className="me-auto text-center">
 							<Nav.Link className="mx-2" as={NavLink} to="/">
 								HOME
 							</Nav.Link>
@@ -138,7 +139,7 @@ export default function AppNavBar() {
 					</Navbar.Collapse>
 				</div>
 			</Navbar>
-			<div className="m-5">break</div>
+			<div className="my-5">break</div>
 		</>
 	);
 }

@@ -1,3 +1,7 @@
+* {
+	margin: 0;
+	padding: 0;
+}
 .product-card {
 	text-align: center;
 	width: 200px;
@@ -20,7 +24,53 @@
 	width: 0px;
 	position: relative;
 	z-index: 1;
+}
 
+.banner {
+	background-image: url("https://images.squarespace-cdn.com/content/v1/5c4ece0e3917ee277d32eaf3/1570273132289-9EYWYC587QZ8R5GYXBK8/celestial-ani.gif?format=750w");
+	width: 100%;
+	height: 450px;
+	background-size: cover;
+	background-position: center;
+	margin-top: -100px;
+}
+
+.second-banner {
+	background-image: url("https://dx5683gi1tv0w.cloudfront.net/dtrjyhj9q/image/upload/w_1920/s3/img0qq31fxpx");
+	width: 100%;
+	height: 300px;
+	background-size: cover;
+	background-position: center;
+	margin-top: -100px;
+}
+
+.third-banner {
+	background-image: url("https://images.squarespace-cdn.com/content/v1/5c4ece0e3917ee277d32eaf3/1570273132289-9EYWYC587QZ8R5GYXBK8/celestial-ani.gif?format=750w");
+	width: 100%;
+	height: 200px;
+	background-size: cover;
+	background-position: bottom;
+	bottom: 0px;
+	margin-top: 150px;
+}
+
+.latest-img {
+	height: 80%px;
+	width: 100%;
+}
+
+.headline {
+	padding-top: 180px;
+	color: white;
+	font-family: "Papyrus", fantasy;
+}
+
+.inactive {
+	opacity: 0.5;
+}
+
+.footer {
+	height: 100px;
 }
 /*scrollbar*/
 ::-webkit-scrollbar {

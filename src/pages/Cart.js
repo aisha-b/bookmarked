@@ -12,6 +12,7 @@ export default function Cart() {
 
 	const [cart, setCart] = useState([]);
 	const [total, setTotal] = useState(0);
+	const [isDisabled, setIsDisabled] = useState(false);
 
 	const getCart = () => {
 		fetch(`${process.env.REACT_APP_API_URL}/api/cart/`, {
@@ -43,6 +44,11 @@ export default function Cart() {
 
 	useEffect(() => {
 		getSum();
+		cart.map((product) => {
+			if (product.productId.isActive === false) {
+				setIsDisabled(true);
+			}
+		});
 	}, [cart]);
 
 	useEffect(() => {
@@ -58,15 +64,38 @@ export default function Cart() {
 					{cart.length > 0 ? (
 						<>
 							{cart.map((product) => {
-								return (
-									<CartCard
-										productProp={product.productId}
-										quantity={product.quantity}
-										setCart={setCart}
-										type={"cart"}
-										key={product.productId._id}
-									/>
-								);
+								if (product.productId.isActive) {
+									return (
+										<CartCard
+											productProp={product.productId}
+											quantity={product.quantity}
+											setCart={setCart}
+											type={"cart"}
+											key={product.productId._id}
+										/>
+									);
+								} else {
+									return (
+										<>
+											<Container className="inactive">
+												<CartCard
+													productProp={
+														product.productId
+													}
+													quantity={product.quantity}
+													setCart={setCart}
+													type={"cart"}
+													key={product.productId._id}
+												/>
+											</Container>
+
+											<p className="m-auto text-secondary mb-3">
+												This item is unavailable. Please
+												remove from cart.
+											</p>
+										</>
+									);
+								}
 							})}
 						</>
 					) : (
@@ -88,7 +117,7 @@ export default function Cart() {
 						) : null}
 
 						<Row className="justify-content-center">
-							{cart.length > 0 ? (
+							{cart.length > 0 && isDisabled === false? (
 								<Col lg={10}>
 									<Button
 										className="m-2 p-2"
@@ -101,7 +130,7 @@ export default function Cart() {
 											},
 										}}
 									>
-										<h3 className="m-auto">
+										<h3 className="m-auto px-2">
 											{" "}
 											Proceed to Checkout
 										</h3>

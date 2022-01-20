@@ -20,6 +20,7 @@ import Wishlist from "./pages/Wishlist";
 import Checkout from "./pages/Checkout";
 import Product from "./pages/Product";
 import Orders from "./pages/Orders";
+import Footer from "./components/Footer";
 
 function App() {
 	const [user, setUser] = useState({
@@ -81,7 +82,7 @@ function App() {
 		<UserProvider value={{ user, setUser, unsetUser, cartQuantity, getCartQuantity }}>
 			<BrowserRouter>
 				<AppNavBar />
-				<Container fluid>
+
 					<Switch>
 						<Route exact path="/" component={Home} />
 						<Route exact path="/shop" component={Shop} />
@@ -96,7 +97,8 @@ function App() {
 						<Route exact path="/product/:productId" component={Product} />
 						<Route exact path="*" component={ErrorPage} />
 					</Switch>
-				</Container>
+
+				<Footer />
 			</BrowserRouter>
 		</UserProvider>
 	);
