@@ -51,7 +51,7 @@ export default function Checkout() {
 						text: "Thank you for shopping with us.",
 					});
 					getCartQuantity();
-					history.push("/");
+					history.push("/account");
 				} else {
 					Swal.fire({
 						title: "Something went wrong!",
