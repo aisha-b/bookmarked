@@ -48,7 +48,6 @@ function App() {
 			.then((res) => res.json())
 			.then((res) => {
 				let data = res.userDetails;
-				console.log(res);
 				if (data !== undefined) {
 					setUser({
 						id: data._id,

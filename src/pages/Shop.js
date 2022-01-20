@@ -11,6 +11,7 @@ import {
 import Swal from "sweetalert2";
 import ProductCard from "../components/ProductCard";
 import ProductTable from "../components/ProductTable";
+import ShopNavBar from "../components/ShopNavBar";
 import UserContext from "../UserContext";
 
 export default function Shop() {
@@ -43,7 +44,6 @@ export default function Shop() {
 		fetch(`${process.env.REACT_APP_API_URL}/api/products/`)
 			.then((res) => res.json())
 			.then((res) => {
-				console.log(res);
 				setProducts(res.products);
 			});
 	};
@@ -95,6 +95,18 @@ export default function Shop() {
 			});
 	};
 
+	const sortByGenre = (genre) => {
+		let productsByGenre = [];
+		activeProducts.map((product) => {
+			return product.specifications[1]["value"].map((prod) => {
+				if (prod.toLowerCase() === genre.toLowerCase()) {
+					productsByGenre.push(product);
+				}
+			});
+		});
+		setActiveProducts(productsByGenre);
+	};
+
 	useEffect(() => {
 		getAllProducts();
 		getAllActiveProducts();
@@ -117,7 +129,10 @@ export default function Shop() {
 
 	function CustomerView() {
 		return (
-			<Container className="d-flex flex-wrap justify-content-center">
+			<Container
+				className="d-flex flex-wrap justify-content-center"
+				style={{ marginTop: "120px" }}
+			>
 				{activeProducts.map((product) => {
 					return (
 						<ProductCard
@@ -264,7 +279,10 @@ export default function Shop() {
 					</Modal>
 				</>
 			) : (
-				<CustomerView />
+				<>
+					<ShopNavBar sortByGenre={sortByGenre} />
+					<CustomerView />
+				</>
 			)}
 		</>
 	);
