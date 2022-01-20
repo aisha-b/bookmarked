@@ -96,6 +96,7 @@ export default function Shop() {
 	};
 
 	const sortByGenre = (genre) => {
+		getAllActiveProducts();
 		let productsByGenre = [];
 		activeProducts.map((product) => {
 			return product.specifications[1]["value"].map((prod) => {
