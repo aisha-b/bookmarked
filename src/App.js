@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { Container } from "react-bootstrap";
 import { UserProvider } from "./UserContext";
 import "./App.css";
-import 'bootswatch/dist/yeti/bootstrap.min.css';
+import "bootswatch/dist/yeti/bootstrap.min.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import AppNavBar from "./components/AppNavBar";
 import ErrorPage from "./pages/ErrorPage";
@@ -55,7 +55,7 @@ function App() {
 					});
 				}
 			});
-	}
+	};
 
 	const getCartQuantity = () => {
 		fetch(`${process.env.REACT_APP_API_URL}/api/cart/`, {
@@ -78,11 +78,13 @@ function App() {
 	}, []);
 
 	return (
-		<UserProvider value={{ user, setUser, unsetUser, cartQuantity, getCartQuantity }}>
+		<UserProvider
+			value={{ user, setUser, unsetUser, cartQuantity, getCartQuantity }}
+		>
 			<BrowserRouter>
 				<AppNavBar />
-		
-				<Switch>
+				<div className="body-container">
+					<Switch>
 						<Route exact path="/" component={Home} />
 						<Route exact path="/shop" component={Shop} />
 						<Route exact path="/register" component={Register} />
@@ -93,9 +95,14 @@ function App() {
 						<Route exact path="/wishlist" component={Wishlist} />
 						<Route exact path="/checkout" component={Checkout} />
 						<Route exact path="/shop-orders" component={Orders} />
-						<Route exact path="/product/:productId" component={Product} />
+						<Route
+							exact
+							path="/product/:productId"
+							component={Product}
+						/>
 						<Route exact path="*" component={ErrorPage} />
 					</Switch>
+				</div>
 
 				<Footer />
 			</BrowserRouter>

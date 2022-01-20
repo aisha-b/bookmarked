@@ -16,6 +16,7 @@ export default function Account() {
 	const [email, setEmail] = useState("");
 	const [orders, setOrders] = useState([]);
 	const [isDisabled, setIsDisabled] = useState(true);
+	const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
 	const [editText, setEditText] = useState("Edit");
 	const [fullName, setFullName] = useState("");
 
@@ -95,7 +96,15 @@ export default function Account() {
 	useEffect(() => {
 		getUserDetails();
 		getUserOrders();
-	}, []);
+	}, [isDisabled]);
+
+	useEffect(() => {
+		if (firstName !== "" && lastName !== "" && mobileNum.length >= 11) {
+			setIsSubmitDisabled(false);
+		} else {
+			setIsSubmitDisabled(true);
+		}
+	}, [firstName, lastName, mobileNum]);
 
 	function OrderDetails(props) {
 		const { street, city, zip, country } =
@@ -334,7 +343,7 @@ export default function Account() {
 										className="w-100"
 										variant="primary"
 										type="submit"
-										disabled={isDisabled}
+										disabled={isSubmitDisabled}
 									>
 										Update
 									</Button>

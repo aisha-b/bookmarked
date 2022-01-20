@@ -2,6 +2,7 @@
 	margin: 0;
 	padding: 0;
 }
+
 .product-card {
 	text-align: center;
 	width: 200px;
@@ -48,7 +49,7 @@
 .third-banner {
 	background-image: url("https://images.squarespace-cdn.com/content/v1/5c4ece0e3917ee277d32eaf3/1570273132289-9EYWYC587QZ8R5GYXBK8/celestial-ani.gif?format=750w");
 	width: 100%;
-	height: 200px;
+	height: 10vh;
 	background-size: cover;
 	background-position: bottom;
 	bottom: 0px;
@@ -70,6 +71,9 @@
 	opacity: 0.5;
 }
 
+.body-container {
+	min-height: 70vh;
+}
 /*scrollbar*/
 ::-webkit-scrollbar {
 	width: 5px;
@@ -84,5 +88,13 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: mediumturquoise;
+	background: #008CBA;
 }
+
+@media only screen and (max-width: 500px) {
+	.product-card {
+		text-align: center;
+		width: 250px;
+		height: 420px;
+	}
+  }

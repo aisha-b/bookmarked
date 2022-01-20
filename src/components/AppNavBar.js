@@ -136,7 +136,7 @@ export default function AppNavBar() {
 							</Nav.Link>
 							<AdminOrderSection />
 						</Nav>
-						<Nav>
+						<Nav className="text-center">
 							<LeftNavSection />
 						</Nav>
 					</Navbar.Collapse>
