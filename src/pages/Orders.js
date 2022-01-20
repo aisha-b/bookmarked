@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import {
+	Button,
+	Card,
+	Col,
+	Container,
+	Dropdown,
+	DropdownButton,
+	Form,
+	Row,
+} from "react-bootstrap";
 import CartCard from "../components/CartCard";
 
 export default function Orders() {
@@ -26,7 +35,7 @@ export default function Orders() {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
-					"Authorization": `Bearer ${localStorage.getItem("token")}`,
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
 				},
 				body: JSON.stringify({
 					status: "confirmed",
@@ -35,12 +44,59 @@ export default function Orders() {
 		)
 			.then((res) => res.json())
 			.then((res) => {
-                console.log(localStorage.getItem("token"))
-                console.log(res)
+				console.log(localStorage.getItem("token"));
+				console.log(res);
 				if (res) {
 					getAllOrders();
 				}
 			});
+	};
+
+	const sortByStatus = (status) => {
+		let ordersByStatus = [];
+
+		if (status === "all") {
+			getAllOrders();
+		} else {
+			fetch(`${process.env.REACT_APP_API_URL}/api/orders/`, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			})
+				.then((res) => res.json())
+				.then((res) => {
+					res.orders.map((order) => {
+						if (order.status == status) {
+							ordersByStatus.push(order);
+						}
+					});
+					setOrders(ordersByStatus);
+				});
+		}
+	};
+
+	const sortByAvailability = (availability) => {
+		let productsByAvailability = [];
+
+		if (availability === "all") {
+			fetch(`${process.env.REACT_APP_API_URL}/api/products/`)
+				.then((res) => res.json())
+				.then((res) => {
+					setProducts(res.products);
+				});
+		} else {
+			fetch(`${process.env.REACT_APP_API_URL}/api/products/`)
+				.then((res) => res.json())
+				.then((res) => {
+					res.products.map((product) => {
+						if (product.isActive === availability) {
+							productsByAvailability.push(product);
+						}
+					});
+					setProducts(productsByAvailability);
+				});
+		}
 	};
 
 	useEffect(() => {
@@ -208,6 +264,29 @@ export default function Orders() {
 	return (
 		<Container>
 			<h1 className="text-center">Shop Orders</h1>
+			<DropdownButton id="status-dropdown" title="Order Status" className="text-center my-3">
+				<Dropdown.Item
+					onClick={() => {
+						sortByStatus("confirmed");
+					}}
+				>
+					Confirmed
+				</Dropdown.Item>
+				<Dropdown.Item
+					onClick={() => {
+						sortByStatus("pending");
+					}}
+				>
+					Pending
+				</Dropdown.Item>
+				<Dropdown.Item
+					onClick={() => {
+						sortByStatus("all");
+					}}
+				>
+					All
+				</Dropdown.Item>
+			</DropdownButton>
 			<Row className="justify-content-center">
 				{orders.map((order, index) => {
 					return (

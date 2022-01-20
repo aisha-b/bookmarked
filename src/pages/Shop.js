@@ -104,11 +104,7 @@ export default function Shop() {
 		let productsByGenre = [];
 
 		if (genre === "all") {
-			fetch(`${process.env.REACT_APP_API_URL}/api/products/active`)
-				.then((res) => res.json())
-				.then((res) => {
-					setActiveProducts(res.activeProducts);
-				});
+			getAllActiveProducts();
 		} else {
 			fetch(`${process.env.REACT_APP_API_URL}/api/products/active`)
 				.then((res) => res.json())
@@ -133,11 +129,7 @@ export default function Shop() {
 		let productsByAvailability = [];
 
 		if (availability === "all") {
-			fetch(`${process.env.REACT_APP_API_URL}/api/products/`)
-				.then((res) => res.json())
-				.then((res) => {
-					setProducts(res.products);
-				});
+			getAllProducts();
 		} else {
 			fetch(`${process.env.REACT_APP_API_URL}/api/products/`)
 				.then((res) => res.json())
