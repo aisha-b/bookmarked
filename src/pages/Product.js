@@ -6,16 +6,17 @@ import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import { faHeart, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import UserContext from "../UserContext";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Product() {
-	const { getCartQuantity } = useContext(UserContext);
+	const { getCartQuantity, user } = useContext(UserContext);
 
 	const location = useLocation();
 	const { productId } = useParams();
 
 	const [product, setProduct] = useState({});
 	const [author, setAuthor] = useState("");
-	const [genre,setGenre] = useState("");
+	const [genre, setGenre] = useState("");
 
 	const [isInWishlist, setIsInWishlist] = useState(false);
 	const [wishBtnVariant, setWishBtnVariant] = useState("outline-danger");
@@ -66,69 +67,95 @@ export default function Product() {
 	};
 
 	const addToWishlist = (id) => {
-		if (isInWishlist) {
-			fetch(
-				`${process.env.REACT_APP_API_URL}/api/wishlist/${id}/remove`,
-				{
-					method: "DELETE",
+		if (user.id === null) {
+			Swal.fire({
+				title: "You need to login first",
+				icon: "error",
+			});
+		} else {
+			if (isInWishlist) {
+				fetch(
+					`${process.env.REACT_APP_API_URL}/api/wishlist/${id}/remove`,
+					{
+						method: "DELETE",
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem(
+								"token"
+							)}`,
+						},
+					}
+				)
+					.then((res) => res.json())
+					.then((res) => {
+						if (res) {
+							setIsInWishlist(false);
+						}
+					});
+			} else {
+				fetch(
+					`${process.env.REACT_APP_API_URL}/api/wishlist/${id}/add`,
+					{
+						method: "PUT",
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem(
+								"token"
+							)}`,
+						},
+					}
+				)
+					.then((res) => res.json())
+					.then((res) => {
+						if (res) {
+							setIsInWishlist(true);
+						}
+					});
+			}
+		}
+	};
+
+	const addToCart = (id) => {
+		if (user.id === null) {
+			Swal.fire({
+				title: "You need to login first",
+				icon: "error",
+			});
+		} else {
+			if (isInCart) {
+				fetch(
+					`${process.env.REACT_APP_API_URL}/api/cart/${id}/remove`,
+					{
+						method: "DELETE",
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem(
+								"token"
+							)}`,
+						},
+					}
+				)
+					.then((res) => res.json())
+					.then((res) => {
+						if (res) {
+							setIsInCart(false);
+							getCartQuantity();
+						}
+					});
+			} else {
+				fetch(`${process.env.REACT_APP_API_URL}/api/cart/${id}/add`, {
+					method: "PUT",
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem(
 							"token"
 						)}`,
 					},
-				}
-			)
-				.then((res) => res.json())
-				.then((res) => {
-					if (res) {
-						setIsInWishlist(false);
-					}
-				});
-		} else {
-			fetch(`${process.env.REACT_APP_API_URL}/api/wishlist/${id}/add`, {
-				method: "PUT",
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			})
-				.then((res) => res.json())
-				.then((res) => {
-					if (res) {
-						setIsInWishlist(true);
-					}
-				});
-		}
-	};
-
-	const addToCart = (id) => {
-		if (isInCart) {
-			fetch(`${process.env.REACT_APP_API_URL}/api/cart/${id}/remove`, {
-				method: "DELETE",
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			})
-				.then((res) => res.json())
-				.then((res) => {
-					if (res) {
-						setIsInCart(false);
-						getCartQuantity();
-					}
-				});
-		} else {
-			fetch(`${process.env.REACT_APP_API_URL}/api/cart/${id}/add`, {
-				method: "PUT",
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			})
-				.then((res) => res.json())
-				.then((res) => {
-					if (res) {
-						setIsInCart(true);
-						getCartQuantity();
-					}
-				});
+				})
+					.then((res) => res.json())
+					.then((res) => {
+						if (res) {
+							setIsInCart(true);
+							getCartQuantity();
+						}
+					});
+			}
 		}
 	};
 
@@ -158,7 +185,9 @@ export default function Product() {
 				<Col lg={6}>
 					<Card className="w-100 p-3">
 						<h2>{product.name}</h2>
-						<Card.Subtitle>Author: {author} | Genre: {genre}</Card.Subtitle>
+						<Card.Subtitle>
+							Author: {author} | Genre: {genre}
+						</Card.Subtitle>
 						<hr />
 						<Card.Subtitle>OVERVIEW</Card.Subtitle>
 						<Card.Text>{product.description}</Card.Text>
