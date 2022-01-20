@@ -119,9 +119,12 @@ export default function AppNavBar() {
 				variant="dark"
 				expand="sm"
 				className="p-3"
+				style={{zIndex:"100"}}
 			>
 				<div className="container-lg">
-					<Navbar.Brand href="/"><FontAwesomeIcon icon={faBookmark} /> BOOKMARKED</Navbar.Brand>
+					<Navbar.Brand href="/">
+						<FontAwesomeIcon icon={faBookmark} /> BOOKMARKED
+					</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-navr">
 						<Nav className="me-auto text-center">
