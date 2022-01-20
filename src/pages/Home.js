@@ -24,8 +24,8 @@ export default function Home() {
 		getAllActiveProducts();
 		setLatestProducts(
 			activeProducts.slice(
-				activeProducts.length - 7,
-				activeProducts.length - 1
+				activeProducts.length - 6,
+				activeProducts.length
 			)
 		);
 	}, [activeProducts]);
