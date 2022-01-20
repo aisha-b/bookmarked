@@ -10,7 +10,6 @@ export default function ShopNavBar(props) {
 			fixed="top"
 			bg="secondary"
 			variant="light"
-			expand="lg"
 			className="p-3"
             style={{marginTop: "70px"}}
 		>
