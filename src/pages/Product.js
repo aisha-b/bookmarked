@@ -11,7 +11,6 @@ import Swal from "sweetalert2";
 export default function Product() {
 	const { getCartQuantity, user } = useContext(UserContext);
 
-	const location = useLocation();
 	const { productId } = useParams();
 
 	const [product, setProduct] = useState({});
@@ -193,23 +192,32 @@ export default function Product() {
 						<Card.Text>{product.description}</Card.Text>
 						<hr />
 						<h3 className="text-primary">Php {product.price}</h3>
-						<hr />
-						<Row>
-							<Button
-								className="col m-1"
-								variant={cartBtnVariant}
-								onClick={(e) => addToCart(productId)}
-							>
-								<FontAwesomeIcon icon={faShoppingCart} />
-							</Button>
-							<Button
-								className="col m-1"
-								variant={wishBtnVariant}
-								onClick={(e) => addToWishlist(productId)}
-							>
-								<FontAwesomeIcon icon={faHeart} />
-							</Button>
-						</Row>
+
+						{user.isAdmin ? null : (
+							<>
+								<hr />
+								<Row>
+									<Button
+										className="col m-1"
+										variant={cartBtnVariant}
+										onClick={(e) => addToCart(productId)}
+									>
+										<FontAwesomeIcon
+											icon={faShoppingCart}
+										/>
+									</Button>
+									<Button
+										className="col m-1"
+										variant={wishBtnVariant}
+										onClick={(e) =>
+											addToWishlist(productId)
+										}
+									>
+										<FontAwesomeIcon icon={faHeart} />
+									</Button>
+								</Row>
+							</>
+						)}
 					</Card>
 				</Col>
 			</Row>
