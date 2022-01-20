@@ -37,6 +37,7 @@ export default function Shop() {
 			.then((res) => res.json())
 			.then((res) => {
 				setActiveProducts(res.activeProducts);
+				setUnsortedProducts(res.activeProducts);
 			});
 	};
 
@@ -96,16 +97,32 @@ export default function Shop() {
 	};
 
 	const sortByGenre = (genre) => {
-		getAllActiveProducts();
 		let productsByGenre = [];
-		activeProducts.map((product) => {
-			return product.specifications[1]["value"].map((prod) => {
-				if (prod.toLowerCase() === genre.toLowerCase()) {
-					productsByGenre.push(product);
-				}
-			});
-		});
-		setActiveProducts(productsByGenre);
+
+		if (genre === "all") {
+			fetch(`${process.env.REACT_APP_API_URL}/api/products/active`)
+				.then((res) => res.json())
+				.then((res) => {
+					setActiveProducts(res.activeProducts);
+				});
+		} else {
+			fetch(`${process.env.REACT_APP_API_URL}/api/products/active`)
+				.then((res) => res.json())
+				.then((res) => {
+					res.activeProducts.map((product) => {
+						return product.specifications[1]["value"].map(
+							(prod) => {
+								if (
+									prod.toLowerCase() === genre.toLowerCase()
+								) {
+									productsByGenre.push(product);
+								}
+							}
+						);
+					});
+					setActiveProducts(productsByGenre);
+				});
+		}
 	};
 
 	useEffect(() => {
