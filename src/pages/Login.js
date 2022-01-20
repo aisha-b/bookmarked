@@ -41,7 +41,7 @@ export default function Login() {
 					Swal.fire({
 						title: "Login successful",
 						icon: "success",
-						text: "Welcome to Bookstore",
+						text: "Welcome to Bookmarked",
 					});
 
 					setEmail("");
