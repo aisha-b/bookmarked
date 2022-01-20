@@ -5,7 +5,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { Card, Button, Col, Container, NavLink, Row } from "react-bootstrap";
+import { Card, Button, Col, Container, Row } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 export default function Home() {
 	const [activeProducts, setActiveProducts] = useState([]);
@@ -47,6 +48,7 @@ export default function Home() {
 						<Card>
 							<Row className="justify-content-center align-items-center">
 								{latestProducts.map((product) => {
+								
 									return (
 										<Col
 											xs={4}
