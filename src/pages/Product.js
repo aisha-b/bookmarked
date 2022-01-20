@@ -15,6 +15,7 @@ export default function Product() {
 
 	const [product, setProduct] = useState({});
 	const [author, setAuthor] = useState("");
+	const [genre,setGenre] = useState("");
 
 	const [isInWishlist, setIsInWishlist] = useState(false);
 	const [wishBtnVariant, setWishBtnVariant] = useState("outline-danger");
@@ -26,8 +27,8 @@ export default function Product() {
 			.then((res) => res.json())
 			.then((res) => {
 				setProduct(res.product);
-				setAuthor(res.product.specifications[0]["value"][0]);
-				console.log(res.product);
+				setAuthor(res.product.specifications[0]["value"].toString());
+				setGenre(res.product.specifications[1]["value"].toString());
 			});
 	};
 	const checkIfInCart = (id) => {
@@ -157,7 +158,7 @@ export default function Product() {
 				<Col lg={6}>
 					<Card className="w-100 p-3">
 						<h2>{product.name}</h2>
-						<Card.Subtitle>{author}</Card.Subtitle>
+						<Card.Subtitle>Author: {author} | Genre: {genre}</Card.Subtitle>
 						<hr />
 						<Card.Subtitle>OVERVIEW</Card.Subtitle>
 						<Card.Text>{product.description}</Card.Text>
