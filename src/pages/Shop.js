@@ -3,11 +3,15 @@ import {
 	Button,
 	Col,
 	Container,
+	Dropdown,
+	DropdownButton,
 	Form,
 	Modal,
+	NavDropdown,
 	Row,
 	Table,
 } from "react-bootstrap";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import Swal from "sweetalert2";
 import ProductCard from "../components/ProductCard";
 import ProductTable from "../components/ProductTable";
@@ -125,6 +129,29 @@ export default function Shop() {
 		}
 	};
 
+	const sortByAvailability = (availability) => {
+		let productsByAvailability = [];
+
+		if (availability === "all") {
+			fetch(`${process.env.REACT_APP_API_URL}/api/products/`)
+				.then((res) => res.json())
+				.then((res) => {
+					setProducts(res.products);
+				});
+		} else {
+			fetch(`${process.env.REACT_APP_API_URL}/api/products/`)
+				.then((res) => res.json())
+				.then((res) => {
+					res.products.map((product) => {
+						if (product.isActive === availability) {
+							productsByAvailability.push(product);
+						}
+					});
+					setProducts(productsByAvailability);
+				});
+		}
+	};
+
 	useEffect(() => {
 		getAllProducts();
 		getAllActiveProducts();
@@ -180,7 +207,34 @@ export default function Shop() {
 							<th>Genre</th>
 							<th>Description</th>
 							<th>Price</th>
-							<th>Availability</th>
+							<th>
+								<NavDropdown
+									id="availability-dropdown"
+									title="Availability"
+								>
+									<Dropdown.Item
+										onClick={() => {
+											sortByAvailability(true);
+										}}
+									>
+										Available
+									</Dropdown.Item>
+									<Dropdown.Item
+										onClick={() => {
+											sortByAvailability(false);
+										}}
+									>
+										Unavailable
+									</Dropdown.Item>
+									<Dropdown.Item
+										onClick={() => {
+											sortByAvailability("all");
+										}}
+									>
+										All
+									</Dropdown.Item>
+								</NavDropdown>
+							</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
