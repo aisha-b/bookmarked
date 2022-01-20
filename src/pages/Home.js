@@ -56,7 +56,9 @@ export default function Home() {
 										>
 											<NavLink
 												className="img-hover"
-												to={`/product/${product._id}`}
+												to={{
+													pathname: `/product/${product._id}`,
+												}}
 											>
 												<img
 													className="latest-img"
