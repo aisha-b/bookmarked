@@ -117,7 +117,7 @@ export default function AppNavBar() {
 				fixed="top"
 				bg="primary"
 				variant="dark"
-				expand="lg"
+				expand="sm"
 				className="p-3"
 			>
 				<div className="container-lg">
