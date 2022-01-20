@@ -26,6 +26,7 @@ export default function Shop() {
 	const [genre, setGenre] = useState("");
 
 	const [showAdd, setShowAdd] = useState(false);
+	const [isDisabled, setIsDisabled] = useState(true);
 
 	const openAdd = () => setShowAdd(true);
 	const closeAdd = () => setShowAdd(false);
@@ -98,6 +99,21 @@ export default function Shop() {
 		getAllProducts();
 		getAllActiveProducts();
 	}, []);
+
+	useEffect(() => {
+		if (
+			name !== "" &&
+			price > 0 &&
+			description !== "" &&
+			imageURL !== "" &&
+			author !== "" &&
+			genre !== ""
+		) {
+			setIsDisabled(false);
+		} else {
+			setIsDisabled(true);
+		}
+	}, [name, price, description, imageURL, author, genre]);
 
 	function CustomerView() {
 		return (
@@ -235,6 +251,7 @@ export default function Shop() {
 								</Form.Group>
 
 								<Button
+									disabled={isDisabled}
 									className="my-2"
 									variant="primary"
 									type="submit"

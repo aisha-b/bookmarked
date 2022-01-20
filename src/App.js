@@ -82,8 +82,8 @@ function App() {
 		<UserProvider value={{ user, setUser, unsetUser, cartQuantity, getCartQuantity }}>
 			<BrowserRouter>
 				<AppNavBar />
-
-					<Switch>
+		
+				<Switch>
 						<Route exact path="/" component={Home} />
 						<Route exact path="/shop" component={Shop} />
 						<Route exact path="/register" component={Register} />

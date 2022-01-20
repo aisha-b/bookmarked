@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Form, Image, Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
 
@@ -23,7 +23,7 @@ export default function ProductTable(props) {
 	const [newAuthor, setNewAuthor] = useState(author.split(","));
 	const [newGenre, setNewGenre] = useState(genre.split(","));
 	const [showAdd, setShowAdd] = useState(false);
-
+	const [isDisabled, setIsDisabled] = useState(false);
 	const openAdd = () => setShowAdd(true);
 	const closeAdd = () => setShowAdd(false);
 
@@ -111,6 +111,21 @@ export default function ProductTable(props) {
 			});
 	};
 
+	useEffect(() => {
+		if (
+			newName !== "" &&
+			newPrice > 0 &&
+			newDescription !== "" &&
+			newImageURL !== "" &&
+			newAuthor !== "" &&
+			newGenre !== ""
+		) {
+			setIsDisabled(false);
+		} else {
+			setIsDisabled(true);
+		}
+	}, [newName, newPrice, newDescription, newImageURL, newAuthor, newGenre]);
+
 	return (
 		<>
 			<tr>
@@ -186,7 +201,11 @@ export default function ProductTable(props) {
 						</Form.Group>
 						<Form.Group controlId="productAuthor">
 							<Form.Label>Author</Form.Label>
-							<Form.Text> (For multiple authors, please separate with comma)</Form.Text>
+							<Form.Text>
+								{" "}
+								(For multiple authors, please separate with
+								comma)
+							</Form.Text>
 							<Form.Control
 								type="text"
 								value={newAuthor}
@@ -195,7 +214,11 @@ export default function ProductTable(props) {
 						</Form.Group>
 						<Form.Group controlId="productAuthor">
 							<Form.Label>Author</Form.Label>
-							<Form.Text> (For multiple genres, please separate with comma)</Form.Text>
+							<Form.Text>
+								{" "}
+								(For multiple genres, please separate with
+								comma)
+							</Form.Text>
 							<Form.Control
 								type="text"
 								value={newGenre}
@@ -230,6 +253,7 @@ export default function ProductTable(props) {
 						</Form.Group>
 
 						<Button
+							disabled={isDisabled}
 							className="my-2"
 							variant="primary"
 							type="submit"
