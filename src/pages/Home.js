@@ -21,7 +21,12 @@ export default function Home() {
 
 	useEffect(() => {
 		getAllActiveProducts();
-		setLatestProducts(activeProducts.slice(0, 6));
+		setLatestProducts(
+			activeProducts.slice(
+				activeProducts.length - 7,
+				activeProducts.length - 1
+			)
+		);
 	}, [activeProducts]);
 
 	return (
@@ -66,7 +71,9 @@ export default function Home() {
 
 						<Row className="my-5">
 							<div className="second-banner my-5 p-5">
-								<h2 className="text-light text-center">It's time to fill your bookshelf.</h2>
+								<h2 className="text-light text-center">
+									It's time to fill your bookshelf.
+								</h2>
 							</div>
 						</Row>
 
