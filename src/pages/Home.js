@@ -46,7 +46,7 @@ export default function Home() {
 					<Col md={10}>
 						<h2>LATEST</h2>
 						<Card>
-							<Row className="justify-content-center align-items-center">
+							<Row className="justify-content-center align-items-center px-3">
 								{latestProducts.map((product) => {
 								
 									return (
@@ -54,7 +54,7 @@ export default function Home() {
 											xs={4}
 											lg={2}
 											key={product._id}
-											className="text-center"
+											className="text-center my-3"
 										>
 											<NavLink
 												className="img-hover"
