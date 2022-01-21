@@ -104,7 +104,7 @@ export default function CartCard(props) {
 	};
 
 	return (
-		<Card className="m-2 w-100 py-2">
+		<Card className="my-2 w-100 py-2">
 			<Container>
 				<Row className="align-items-center justify-content-lg-between justify-content-center text-center">
 					<Col lg={2}>

@@ -1,6 +1,15 @@
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useState } from "react";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
+import {
+	Button,
+	Card,
+	Col,
+	Container,
+	Form,
+	Modal,
+	Row,
+} from "react-bootstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Swal from "sweetalert2";
 import CartCard from "../components/CartCard";
@@ -234,6 +243,7 @@ export default function Account() {
 								{order.orderId.items.map((product) => {
 									return (
 										<CartCard
+											className="col"
 											productProp={product.productId}
 											type={"order"}
 											quantity={product.quantity}
