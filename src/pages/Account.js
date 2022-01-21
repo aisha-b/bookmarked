@@ -15,7 +15,7 @@ export default function Account() {
 	const [email, setEmail] = useState("");
 	const [orders, setOrders] = useState([]);
 	const [isDisabled, setIsDisabled] = useState(true);
-	const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
+	const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 	const [editText, setEditText] = useState("Edit");
 	const [fullName, setFullName] = useState("");
 
@@ -95,15 +95,15 @@ export default function Account() {
 	useEffect(() => {
 		getUserDetails();
 		getUserOrders();
-	}, [isDisabled]);
+	}, []);
 
 	useEffect(() => {
-		if (firstName !== "" && lastName !== "" && mobileNum.length >= 11) {
+		if (firstName !== "" && lastName !== "" && mobileNum.length >= 11 && !isDisabled) {
 			setIsSubmitDisabled(false);
 		} else {
 			setIsSubmitDisabled(true);
 		}
-	}, [firstName, lastName, mobileNum]);
+	}, [firstName, lastName, mobileNum, isDisabled]);
 
 	function OrderDetails(props) {
 		const { street, city, zip, country } =
