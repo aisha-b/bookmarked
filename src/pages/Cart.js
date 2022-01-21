@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { NavLink, Redirect } from "react-router-dom";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import Swal from "sweetalert2";
 import CartCard from "../components/CartCard";
 import UserContext from "../UserContext";
 

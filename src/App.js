@@ -2,17 +2,14 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
-import { Container } from "react-bootstrap";
 import { UserProvider } from "./UserContext";
 import "./App.css";
 import "bootswatch/dist/yeti/bootstrap.min.css";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import AppNavBar from "./components/AppNavBar";
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Login from "./pages/Login";
-import Logout from "./pages/Logout";
 import Register from "./pages/Register";
 import Account from "./pages/Account";
 import Cart from "./pages/Cart";
@@ -89,7 +86,6 @@ function App() {
 						<Route exact path="/shop" component={Shop} />
 						<Route exact path="/register" component={Register} />
 						<Route exact path="/login" component={Login} />
-						<Route exact path="/logout" component={Logout} />
 						<Route exact path="/account" component={Account} />
 						<Route exact path="/cart" component={Cart} />
 						<Route exact path="/wishlist" component={Wishlist} />

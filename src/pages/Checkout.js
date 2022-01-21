@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { Redirect, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import CartCard from "../components/CartCard";
 import UserContext from "../UserContext";
