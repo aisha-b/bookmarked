@@ -39,14 +39,24 @@ export default function Cart() {
 		setTotal(sum);
 	};
 
-	useEffect(() => {
-		getSum();
-
+	const checkItemsAvailability = () => {
+		let counter = 0;
 		cart.map((product) => {
 			if (product.productId.isActive === false) {
 				setIsDisabled(true);
+			}else{
+				counter++;
 			}
 		});
+
+		if(counter == cart.length){
+			setIsDisabled(false)
+		}
+	}
+
+	useEffect(() => {
+		getSum();
+		checkItemsAvailability();
 	}, [cart]);
 
 	useEffect(() => {
