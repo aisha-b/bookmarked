@@ -9,7 +9,7 @@ export default function CartCard(props) {
 	const {getCartQuantity} = useContext(UserContext);
 	const { _id, name, imageURL, price } = props.productProp;
 	const quantity = props.quantity;
-	const setCart = props.setCart;
+	const getCart = props.getCart;
 
 	const [itemQuantity, setItemQuantity] = useState();
 	const [isMinusBtnDisabled, setIsMinusBtnDisabled] = useState(false);
@@ -25,21 +25,6 @@ export default function CartCard(props) {
 			setIsMinusBtnDisabled(false);
 		}
 	}, [itemQuantity]);
-
-	const getCart = () => {
-		fetch(`${process.env.REACT_APP_API_URL}/api/cart/`, {
-			method: "GET",
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem("token")}`,
-			},
-		})
-			.then((res) => res.json())
-			.then((res) => {
-				if (res.cart) {
-					setCart(res.cart);
-				}
-			});
-	};
 
 	const increaseQuantity = (id) => {
 		fetch(

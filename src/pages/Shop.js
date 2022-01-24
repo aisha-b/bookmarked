@@ -1,17 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import {
 	Button,
-	Col,
 	Container,
 	Dropdown,
 	DropdownButton,
 	Form,
 	Modal,
-	NavDropdown,
-	Row,
 	Table,
 } from "react-bootstrap";
-import DropdownItem from "react-bootstrap/esm/DropdownItem";
+import { useMediaQuery } from "react-responsive";
 import Swal from "sweetalert2";
 import ProductCard from "../components/ProductCard";
 import ProductTable from "../components/ProductTable";
@@ -30,6 +27,8 @@ export default function Shop() {
 	const [author, setAuthor] = useState("");
 	const [genre, setGenre] = useState("");
 
+	const isLargeScreen = useMediaQuery({ query: "(min-width: 1000px)" });
+
 	const [showAdd, setShowAdd] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(true);
 
@@ -41,7 +40,6 @@ export default function Shop() {
 			.then((res) => res.json())
 			.then((res) => {
 				setActiveProducts(res.activeProducts);
-				setUnsortedProducts(res.activeProducts);
 			});
 	};
 
@@ -190,58 +188,73 @@ export default function Shop() {
 				<Button variant="success" className="my-2" onClick={openAdd}>
 					Add Product
 				</Button>
-				<Table bordered>
-					<thead>
-						<tr>
-							<th>Image</th>
-							<th>Name</th>
-							<th>Author</th>
-							<th>Genre</th>
-							<th>Description</th>
-							<th>Price</th>
-							<th>
-								<NavDropdown
-									id="availability-dropdown"
-									title="Availability"
-								>
-									<Dropdown.Item
-										onClick={() => {
-											sortByAvailability(true);
-										}}
-									>
-										Available
-									</Dropdown.Item>
-									<Dropdown.Item
-										onClick={() => {
-											sortByAvailability(false);
-										}}
-									>
-										Unavailable
-									</Dropdown.Item>
-									<Dropdown.Item
-										onClick={() => {
-											sortByAvailability("all");
-										}}
-									>
-										All
-									</Dropdown.Item>
-								</NavDropdown>
-							</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{products.map((product) => {
-							return (
-								<ProductTable
-									productProp={product}
-									getAllProducts={getAllProducts}
-									key={product._id}
-								/>
-							);
-						})}
-					</tbody>
-				</Table>
+
+				<DropdownButton
+					className="my-2"
+					variant="light"
+					id="availability-dropdown"
+					title="Sort by Availability"
+				>
+					<Dropdown.Item
+						onClick={() => {
+							sortByAvailability(true);
+						}}
+					>
+						Available
+					</Dropdown.Item>
+					<Dropdown.Item
+						onClick={() => {
+							sortByAvailability(false);
+						}}
+					>
+						Unavailable
+					</Dropdown.Item>
+					<Dropdown.Item
+						onClick={() => {
+							sortByAvailability("all");
+						}}
+					>
+						All
+					</Dropdown.Item>
+				</DropdownButton>
+
+				{isLargeScreen ? (
+					<Table bordered>
+						<thead>
+							<tr>
+								<th>Image</th>
+								<th>Name</th>
+								<th>Author</th>
+								<th>Genre</th>
+								<th>Description</th>
+								<th>Price</th>
+								<th>Availability</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{products.map((product) => {
+								return (
+									<ProductTable
+										productProp={product}
+										getAllProducts={getAllProducts}
+										key={product._id}
+									/>
+								);
+							})}
+						</tbody>
+					</Table>
+				) : (
+					products.map((product) => {
+						return (
+							<ProductTable
+								productProp={product}
+								getAllProducts={getAllProducts}
+								key={product._id}
+							/>
+						);
+					})
+				)}
 			</Container>
 		);
 	}

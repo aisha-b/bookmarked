@@ -7,8 +7,6 @@ import UserContext from "../UserContext";
 
 export default function Cart() {
 	const { user } = useContext(UserContext);
-	const { productId } = useParams();
-
 	const [cart, setCart] = useState([]);
 	const [total, setTotal] = useState(0);
 	const [isDisabled, setIsDisabled] = useState(false);
@@ -43,6 +41,7 @@ export default function Cart() {
 
 	useEffect(() => {
 		getSum();
+
 		cart.map((product) => {
 			if (product.productId.isActive === false) {
 				setIsDisabled(true);
@@ -68,7 +67,7 @@ export default function Cart() {
 										<CartCard
 											productProp={product.productId}
 											quantity={product.quantity}
-											setCart={setCart}
+											getCart={getCart}
 											type={"cart"}
 											key={product.productId._id}
 										/>
@@ -82,7 +81,7 @@ export default function Cart() {
 														product.productId
 													}
 													quantity={product.quantity}
-													setCart={setCart}
+													getCart={getCart}
 													type={"cart"}
 													key={product.productId._id}
 												/>
@@ -116,7 +115,7 @@ export default function Cart() {
 						) : null}
 
 						<Row className="justify-content-center">
-							{cart.length > 0 && isDisabled === false? (
+							{cart.length > 0 && isDisabled === false ? (
 								<Col lg={10}>
 									<Button
 										className="m-2 p-2"
