@@ -177,14 +177,14 @@ export default function ProductTable(props) {
 						>
 							Update
 						</Button>
-						<Button
+						{/* <Button
 							className="my-1"
 							variant="danger"
 							style={{ width: "100px" }}
 							onClick={() => deleteProduct(_id)}
 						>
 							Delete
-						</Button>
+						</Button> */}
 					</td>
 				</tr>
 			) : (
