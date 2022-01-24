@@ -152,7 +152,7 @@ export default function ProductTable(props) {
 						{isActive ? (
 							<Button
 								className="my-1"
-								variant="secondary"
+								variant="danger"
 								style={{ width: "100px" }}
 								onClick={() => archiveProduct(_id)}
 							>
@@ -212,7 +212,7 @@ export default function ProductTable(props) {
 						{isActive ? (
 							<Button
 								className="my-1 mx-2"
-								variant="secondary"
+								variant="danger"
 								style={{ width: "100px" }}
 								onClick={() => archiveProduct(_id)}
 							>
