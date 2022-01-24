@@ -83,7 +83,7 @@ export default function Home() {
 
 						<Row className="my-5 justify-content-center">
 							<Col lg={4}>
-								<Card className="p-5 text-center m-4 text-primary">
+								<Card className="p-5 text-center text-primary w-100">
 									<h2>Low Cost</h2>
 									<h3>
 										{" "}
@@ -95,7 +95,7 @@ export default function Home() {
 								</Card>
 							</Col>
 							<Col lg={4}>
-								<Card className="p-5 text-center m-4 text-primary">
+								<Card className="p-5 text-center text-primary w-100">
 									<h2>Fast Delivery</h2>
 									<h3>
 										<FontAwesomeIcon
@@ -106,7 +106,7 @@ export default function Home() {
 								</Card>
 							</Col>
 							<Col lg={4}>
-								<Card className="p-5 text-center m-4 text-primary">
+								<Card className="p-5 text-center text-primary w-100">
 									<h2>Good Reads</h2>
 									<h3>
 										<FontAwesomeIcon
