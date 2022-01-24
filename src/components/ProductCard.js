@@ -32,14 +32,6 @@ export default function ProductCard(props) {
 			});
 	};
 
-	const getAllActiveProducts = () => {
-		fetch(`${process.env.REACT_APP_API_URL}/api/products/active`)
-			.then((res) => res.json())
-			.then((res) => {
-				setActiveProducts(res.activeProducts);
-			});
-	};
-
 	const checkIfInWishlist = (id) => {
 		fetch(`${process.env.REACT_APP_API_URL}/api/wishlist/${id}/check`, {
 			method: "GET",
@@ -95,7 +87,7 @@ export default function ProductCard(props) {
 				.then((res) => res.json())
 				.then((res) => {
 					if (res) {
-						getAllActiveProducts();
+						setIsInWishlist(false);
 						getWishlist();
 					}
 				});
@@ -109,7 +101,7 @@ export default function ProductCard(props) {
 				.then((res) => res.json())
 				.then((res) => {
 					if (res) {
-						getAllActiveProducts();
+						setIsInWishlist(true);
 						getWishlist();
 					}
 				});
@@ -133,7 +125,7 @@ export default function ProductCard(props) {
 				.then((res) => {
 					if (res) {
 						getCartQuantity();
-						getAllActiveProducts();
+						setIsInCart(false);
 					}
 				});
 		} else {
@@ -147,7 +139,7 @@ export default function ProductCard(props) {
 				.then((res) => {
 					if (res) {
 						getCartQuantity();
-						getAllActiveProducts();
+						setIsInCart(true);
 					}
 				});
 		}
@@ -156,6 +148,7 @@ export default function ProductCard(props) {
 	useEffect(() => {
 		checkIfInWishlist(_id);
 		checkIfInCart(_id);
+
 		if (isInWishlist) {
 			setWishBtnVariant("danger");
 		} else {

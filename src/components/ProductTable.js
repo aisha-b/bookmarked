@@ -206,7 +206,7 @@ export default function ProductTable(props) {
 					<Card.Text>Description: {description}</Card.Text>
 					<Card.Text>Price: Php {price}</Card.Text>
 					<Card.Text>
-						Availability: {isActive ? "Available" : "Unvailable"}
+						Availability: {isActive ? "Available" : "Unavailable"}
 					</Card.Text>
 					<div className="d-flex justify-content-center">
 						{isActive ? (
